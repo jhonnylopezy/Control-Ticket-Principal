@@ -54,13 +54,14 @@ namespace Control_de_turno
             listBox1.Items.Add(ClientSocket.ConnectToServer());
             Thread t = new Thread(listenServer);
                 t.Start();
+            textUser.ReadOnly = true;
             //InitTread();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             //listBox1.Items.Add(ClientSocket.RequestLoop(textBox1.Text));
-            ClientSocket.RequestLoop(textBox1.Text);
+            ClientSocket.RequestLoop(textUser.Text+": "+textBox1.Text);
             textBox1.Text = "";
         }
     }
