@@ -15,16 +15,39 @@ namespace Control_de_turno
     {
         int contador = 0;
         List<string> listTicket = new List<string>();
+        FormScreen formScreen = new FormScreen();
         public FormTicket()
         {
             InitializeComponent();
+            formScreen.Show();
             MessageBox.Show(ClientSocket.ConnectToServer("TICKETERO"));
-            //Thread thread = new Thread(startThread);
-            //thread.Start();
+            Thread thread = new Thread(startThread);
+            thread.Start();
         }
         void startThread()
         {
-            
+            string respuesta = "";
+            while (true)
+            {
+                respuesta = ClientSocket.ReceiveResponse();
+                if (respuesta != "error message receive")
+                {
+                    //listBox1.Items.Add(respuesta);
+                    try
+                    {
+                        this.Invoke((MethodInvoker)delegate {
+
+                            formScreen.AddNewTicket(respuesta);
+                            });
+                    }
+                    catch (Exception e)
+                    {
+                        throw e;
+                    }
+                    //Debug.WriteLine("escuchando del server: "+ respuesta);
+                }
+
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

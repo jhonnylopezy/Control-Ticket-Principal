@@ -62,7 +62,7 @@ namespace ATM
         {
             //labelNro.Text = "C-10";
             var sendData = new SendData();
-            sendData=
+            //sendData=
             var respuesta= ClientSocket.RequestLoop("Cajero&01: enviando Peticion");
             if (string.IsNullOrEmpty(respuesta))
             {

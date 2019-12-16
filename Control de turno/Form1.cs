@@ -8,12 +8,12 @@ namespace Control_de_turno
 
     public partial class Form1 : Form
     {
-        Form2 form2 = new Form2(0);
+        //Form2 form2 = new Form2(0);
         ClientSocket clientSocket = new ClientSocket();
         public Form1()
         {
             InitializeComponent();
-            form2.Show();
+            //form2.Show();
 
         }
         //public void InitTread()
