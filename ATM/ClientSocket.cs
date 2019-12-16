@@ -7,7 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Control_de_turno
+namespace ATM
+
 {
     class ClientSocket
     {
@@ -36,8 +37,6 @@ namespace Control_de_turno
                     //Console.WriteLine("Connection attempt " + attempts);
                     // Change IPAddress.Loopback to a remote IP to connect to a remote host.
                     clientSocket.Connect(IPAddress.Loopback, PORT);
-                   
-                   
                 }
                 catch (SocketException e)
                 {
@@ -51,7 +50,7 @@ namespace Control_de_turno
             return "Connected";
         }
 
-        public static void RequestLoop(string message)
+        public static string RequestLoop(string message)
         {
             //Console.WriteLine(@"<Type ""exit"" to properly disconnect client>");
 
@@ -59,7 +58,7 @@ namespace Control_de_turno
             //if (clientSocket.Connected)
             //{
                 SendString(message);
-                //return ReceiveResponse();
+                return ReceiveResponse();
             //}
             //return "Connection not initialized";
             //}
@@ -92,7 +91,7 @@ namespace Control_de_turno
         /// <summary>
         /// Sends a string to the server with ASCII encoding.
         /// </summary>
-        public static void SendString(string text)
+        private static void SendString(string text)
         {
             
                 byte[] buffer = Encoding.ASCII.GetBytes(text);

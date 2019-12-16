@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Control de turno", "Control
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerSocket_Ticket", "ServerSocket_Ticket\ServerSocket_Ticket.csproj", "{92029055-E81A-47B9-88A3-9302787A3D74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATM", "ATM\ATM.csproj", "{59C7FADF-5EA7-40E7-83AB-4E1D78336D53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{92029055-E81A-47B9-88A3-9302787A3D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92029055-E81A-47B9-88A3-9302787A3D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92029055-E81A-47B9-88A3-9302787A3D74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59C7FADF-5EA7-40E7-83AB-4E1D78336D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C7FADF-5EA7-40E7-83AB-4E1D78336D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59C7FADF-5EA7-40E7-83AB-4E1D78336D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59C7FADF-5EA7-40E7-83AB-4E1D78336D53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

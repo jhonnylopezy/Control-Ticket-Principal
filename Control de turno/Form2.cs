@@ -17,12 +17,12 @@ namespace Control_de_turno
         {
             ValorTicket = valorParam;
             InitializeComponent();
-            labelNro.Text =Convert.ToString(ValorTicket);
+            //labelNro.Text =Convert.ToString(ValorTicket);
         }
         public void changeValueTicket()
         {
             ValorTicket++;
-            labelNro.Text = Convert.ToString(ValorTicket);
+            //labelNro.Text = Convert.ToString(ValorTicket);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -33,6 +33,11 @@ namespace Control_de_turno
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            axWindowsMediaPlayer1.Ctlcontrols.play();
         }
     }
 }

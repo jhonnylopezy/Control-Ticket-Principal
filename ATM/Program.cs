@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Control_de_turno
+namespace ATM
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace Control_de_turno
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormTicket());
+            Application.Run(new Form1());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,7 +11,8 @@ namespace ServerSocket_Ticket
     class Program
     {
         private static readonly Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        private static readonly List<Socket> clientSockets = new List<Socket>();
+        private static readonly List<ClientSocket> clientSockets = new List<ClientSocket>();
+        private static readonly List<Ticket> listTickets = new List<Ticket>();
         private const int BUFFER_SIZE = 2048;
         private const int PORT = 100;
         private static readonly byte[] buffer = new byte[BUFFER_SIZE];
@@ -21,7 +23,7 @@ namespace ServerSocket_Ticket
             SetupServer();
             while (true)
             {
-                var message=Console.ReadLine(); // When we press enter close everything
+                var message = Console.ReadLine(); // When we press enter close everything
                 sendMessageAllClient(message);
             }
             //CloseAllSockets();
@@ -46,15 +48,15 @@ namespace ServerSocket_Ticket
             foreach (var item in clientSockets)
             {
                 byte[] data = Encoding.ASCII.GetBytes(message);
-                item.Send(data);
+                item.socket.Send(data);
             }
         }
         private static void CloseAllSockets()
         {
-            foreach (Socket socket in clientSockets)
+            foreach (ClientSocket clientSocket in clientSockets)
             {
-                socket.Shutdown(SocketShutdown.Both);
-                socket.Close();
+                clientSocket.socket.Shutdown(SocketShutdown.Both);
+                clientSocket.socket.Close();
             }
 
             serverSocket.Close();
@@ -72,11 +74,12 @@ namespace ServerSocket_Ticket
             {
                 return;
             }
-
-            clientSockets.Add(socket);
+            var clientSocket = new ClientSocket();
+            clientSocket.socket = socket;
+            clientSockets.Add(clientSocket);
             socket.BeginReceive(buffer, 0, BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
             Console.WriteLine("Client connected, waiting for request...");
-            
+
             serverSocket.BeginAccept(AcceptCallback, null);
         }
 
@@ -84,7 +87,7 @@ namespace ServerSocket_Ticket
         {
             Socket current = (Socket)AR.AsyncState;
             int received;
-
+            var resultClient = clientSockets.Where(t => t.socket == current).FirstOrDefault();
             try
             {
                 received = current.EndReceive(AR);
@@ -94,45 +97,52 @@ namespace ServerSocket_Ticket
                 Console.WriteLine("Client forcefully disconnected");
                 // Don't shutdown because the socket may be disposed and its disconnected anyway.
                 current.Close();
-                clientSockets.Remove(current);
+                clientSockets.Remove(resultClient);
                 return;
             }
-
             byte[] recBuf = new byte[received];
             Array.Copy(buffer, recBuf, received);
             string text = Encoding.ASCII.GetString(recBuf);
-            Console.WriteLine("Received Text: " + text);
-
-            //if (text.ToLower() == "get time") // Client requested time
-            //{
-            //    Console.WriteLine("Text is a get time request");
-            //    byte[] data = Encoding.ASCII.GetBytes(DateTime.Now.ToLongTimeString());
-            //    current.Send(data);
-            //    Console.WriteLine("Time sent to client");
-            //}
-            //else 
-            if (text.ToLower() == "exit") // Client wants to exit gracefully
+            if (text.Contains("[") && text.Contains("]"))
             {
-                // Always Shutdown before closing
-                current.Shutdown(SocketShutdown.Both);
-                current.Close();
-                clientSockets.Remove(current);
-                Console.WriteLine("Client disconnected");
-                return;
+                resultClient.nick = text.Replace("[", "").Replace("]", "");
             }
             else
             {
-                //Console.WriteLine("Text is an invalid request");
-                byte[] data = Encoding.ASCII.GetBytes(text);
-                foreach (var item in clientSockets)
+                Console.WriteLine("Received Text: " + text);
+                var objText = text.Split(':');
+                if(objText[0]== "TICKETERO")
                 {
-                    item.Send(data);
+                    var ticket = new Ticket();
+                    ticket.taken = false;
+                    ticket.nro = objText[1];
+                    listTickets.Add(ticket);
                 }
-                //current.Send(data);
-                //Console.WriteLine("Warning Sent");
-                Console.WriteLine("message from client");
-            }
+                else
+                {
+                    var valueNro = "";
+                    foreach (var item in listTickets)
+                    {
 
+                        if(item.taken == false)
+                        {
+                            valueNro = item.nro;
+                            item.taken = true;
+                            break;
+                        }
+                    }
+                    
+                    byte[] data = Encoding.ASCII.GetBytes(valueNro);
+                    foreach (var item in clientSockets)
+                    {
+                        if (item.nick == "TICKETERO")
+                            item.socket.Send(data);
+                    }
+                    current.Send(data);
+                    Console.WriteLine("message from client");
+                }
+                
+            }
             current.BeginReceive(buffer, 0, BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
         }
     }

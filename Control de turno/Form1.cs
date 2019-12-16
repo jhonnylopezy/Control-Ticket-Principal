@@ -13,8 +13,8 @@ namespace Control_de_turno
         public Form1()
         {
             InitializeComponent();
-            //form2.Show();
-            
+            form2.Show();
+
         }
         //public void InitTread()
         //{
@@ -51,7 +51,7 @@ namespace Control_de_turno
         private void button1_Click(object sender, EventArgs e)
         {
             //form2.changeValueTicket();
-            listBox1.Items.Add(ClientSocket.ConnectToServer());
+            listBox1.Items.Add(ClientSocket.ConnectToServer("cajero"));
             Thread t = new Thread(listenServer);
                 t.Start();
             textUser.ReadOnly = true;
