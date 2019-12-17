@@ -61,6 +61,7 @@ namespace Control_de_turno
             axWindowsMediaPlayer1.URL = @"E:\Proyectos\Windows Form\control turno 2\Control de turno\Resources\Wildlife.wmv";
             axWindowsMediaPlayer1.settings.setMode("loop", true);
             axWindowsMediaPlayer1.PlayStateChange += AxWindowsMediaPlayer1_PlayStateChange;
+            axWindowsMediaPlayer1.uiMode = "None";
             axWindowsMediaPlayer1.Ctlcontrols.play();
 
         }
