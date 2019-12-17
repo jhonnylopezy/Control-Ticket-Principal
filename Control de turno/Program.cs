@@ -16,7 +16,7 @@ namespace Control_de_turno
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormTicket());
+            Application.Run(new FormScreen());
         }
     }
 }
